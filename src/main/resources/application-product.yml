@@ -1,0 +1,29 @@
+server:
+  port: 8090
+# 公安算法接口地址
+com:
+  dinfo:
+    # 审讯接口
+    algorithmUrl: http://68.126.54.60:8888/recordanalysis/app/theft-suspect
+    # 交通类算法抽取接口
+    # 询问接口
+#    algorithmUrl: http://68.126.54.60:8888/recordanalysis/app/theft-victim
+    trafficUrl: http://68.126.54.60:8888/recordanalysis/app/shunde-traffic
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  redis:
+    database: 0
+    host: 68.126.54.60
+    port: 6379
+    password:
+    expire: 60
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0

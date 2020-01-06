@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dinfo.robotea.mapper.CaseClassificationMapper">
+
+  <!--  <select id="getAllCamerasPage" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT eci.camera_id,eci.address,eci.camera_ip,eci.camera_dep,
+        eci.longitude, eci.latitude,eci.alias
+        FROM ew_camera_info eci WHERE 1=1
+        <if test="camera_dep != null">AND camera_dep = #{camera_dep}</if>
+        LIMIT #{from},#{to}
+    </select>
+
+    <select id="getAllCamerasCounts" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT eci.camera_id,eci.address,eci.camera_ip,
+        eci.camera_dep, eci.longitude, eci.latitude,eci.alias
+        FROM ew_camera_info eci WHERE 1=1
+        <if test="camera_dep != null">AND camera_dep = #{camera_dep}</if>
+
+
+        ) ss
+
+
+    </select>-->
+
+    <!-- -->
+    <insert id="insertCaseClassification" parameterType="java.util.List" useGeneratedKeys="false">
+          INSERT INTO `case_classification` (id,name,update_time,update_user)
+          VALUES
+          <foreach collection="list" item="item" index="index" separator=",">
+              (#{item.id},
+              #{item.name},
+              #{item.update_time},
+              #{item.update_user}
+              )
+
+          </foreach>
+
+    </insert>
+
+
+
+</mapper>
