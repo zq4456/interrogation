@@ -196,7 +196,7 @@ public class ApplicationTest {
     private CaseClassificationMapper caseClassificationMapper;
 
     /**
-     * Mybatis 插入测试
+     * Mybatis 插入测试 aaa
      * */
     @Test
     public void testCaseClassificationMapper(){
