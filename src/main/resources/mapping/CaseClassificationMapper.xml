@@ -3,42 +3,77 @@
 
 <mapper namespace="com.dinfo.robotea.mapper.CaseClassificationMapper">
 
-  <!--  <select id="getAllCamerasPage" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT eci.camera_id,eci.address,eci.camera_ip,eci.camera_dep,
-        eci.longitude, eci.latitude,eci.alias
-        FROM ew_camera_info eci WHERE 1=1
-        <if test="camera_dep != null">AND camera_dep = #{camera_dep}</if>
-        LIMIT #{from},#{to}
+    <!-- 案件类别 分页条件查询-->
+    <select id="getCaseClassificationPage" parameterType="java.util.Map" resultType="java.util.Map">
+
+        SELECT cc.`id`,cc.`name`,cc.`update_time`,cc.`update_user`,cc.`status`
+        FROM case_classification cc
+        WHERE cc.`status` ='1'
+        <if test="name != null">AND cc.`name` LIKE CONCAT('%',#{name},'%') </if>
+        ORDER BY cc.`update_time` DESC
+        LIMIT #{from},#{to} ;
     </select>
 
-    <select id="getAllCamerasCounts" parameterType="java.util.Map" resultType="int">
+    <!-- 案件类别 条件查询返回总数-->
+    <select id="getCaseClassificationCounts" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(*) FROM (
-        SELECT eci.camera_id,eci.address,eci.camera_ip,
-        eci.camera_dep, eci.longitude, eci.latitude,eci.alias
-        FROM ew_camera_info eci WHERE 1=1
-        <if test="camera_dep != null">AND camera_dep = #{camera_dep}</if>
-
-
+            SELECT cc.`id`
+            FROM case_classification cc
+            WHERE cc.`status` ='1'
+            <if test="name != null">AND cc.`name` LIKE CONCAT('%',#{name},'%') </if>
         ) ss
 
 
-    </select>-->
+    </select>
 
-    <!-- -->
+
+
+    <!-- 案件类别新增-->
     <insert id="insertCaseClassification" parameterType="java.util.List" useGeneratedKeys="false">
-          INSERT INTO `case_classification` (id,name,update_time,update_user)
+          INSERT INTO `case_classification` (id,name,update_time,update_user,status)
           VALUES
           <foreach collection="list" item="item" index="index" separator=",">
-              (#{item.id},
-              #{item.name},
-              #{item.update_time},
-              #{item.update_user}
+              ( #{item.id},
+                #{item.name},
+                #{item.update_time},
+                #{item.update_user},
+                #{item.status}
               )
 
           </foreach>
 
     </insert>
 
+
+    <!-- 案件类别修改-->
+    <update id="updateCaseClassification"  parameterType="java.util.Map">
+        UPDATE `case_classification`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">name=#{name},</if>
+            <if test="update_time!=null">update_time=#{update_time},</if>
+            <if test="update_user!=null">update_user=#{update_user},</if>
+        </trim>
+        WHERE `id` = #{id}
+
+    </update>
+
+    <!-- 案件类别删除-->
+    <delete id="batchDeleteCaseClassification" parameterType="java.util.Map">
+        UPDATE `case_classification`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="update_time!=null">update_time=#{update_time},</if>
+            <if test="update_user!=null">update_user=#{update_user},</if>
+            <if test="status!=null">status=#{status},</if>
+        </trim>
+        WHERE 1=1
+        AND `id` IN
+        <foreach collection="idList" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        <!-- 案件类别 如果和 审讯模板存在关联，则不可以删除 TODO -->
+
+
+    </delete>
 
 
 </mapper>

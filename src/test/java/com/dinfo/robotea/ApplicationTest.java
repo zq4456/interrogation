@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -196,17 +198,22 @@ public class ApplicationTest {
     private CaseClassificationMapper caseClassificationMapper;
 
     /**
-     * Mybatis 插入测试 aaa
+     *  案件类别 插入测试
      * */
     @Test
-    public void testCaseClassificationMapper(){
+    public void testCaseClassificationAddMapper(){
+
+//        Timestamp createTime = new Timestamp(new Date().getTime());
+
+        String updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         List list = new ArrayList();
         Map map1 = new HashMap();
-        map1.put("id","207");
-        map1.put("name","haha7");
-        map1.put("update_time","2020-01-05 10:17:23");
-        map1.put("update_user","aa7");
+        map1.put("id","209");
+        map1.put("name","haha9哈哈");
+        map1.put("update_time",updateTime);
+        map1.put("update_user","aa9哈哈");
+        map1.put("status","1"); //生效
         list.add(map1);
 
     /*    Map map2 = new HashMap();
@@ -227,6 +234,78 @@ public class ApplicationTest {
         int num = caseClassificationMapper.insertCaseClassification(list);
         System.out.println("\t插入了新数据：\t"+num);
 
+
+    }
+
+    /**
+     *  案件类别 查询列表 测试
+     * */
+    @Test
+    public void testCaseClassificationQueryMapper(){
+
+
+        Map<String, Object> map = new HashMap();
+        map.put("from",0);
+        map.put("to",10);
+//        map.put("name","haha9");
+        map.put("name","b");
+
+        int total = caseClassificationMapper.getCaseClassificationCounts(map);
+        List list = caseClassificationMapper.getCaseClassificationPage(map);
+        System.out.println("\t分页查询结果\t"+total+"\t"+list);
+
+
+
+
+    }
+
+
+    /**
+     *  案件类别 删除测试
+     * */
+    @Test
+    public void testCaseClassificationRemoveMapper(){
+
+        String updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+
+        Map map1 = new HashMap();
+
+        List idList = new ArrayList();
+        idList.add("206");
+        idList.add("208");
+        map1.put("idList",idList);
+
+        map1.put("update_time",updateTime);
+        map1.put("update_user","liwen");
+        map1.put("status","0");
+
+
+        int num = caseClassificationMapper.batchDeleteCaseClassification(map1);
+        System.out.println("\t更新数目：\t"+num);
+
+
+
+    }
+
+    /** 案件类别 修改测试
+     *
+     * updateCaseClassification
+     * */
+    @Test
+    public void testCaseClassificationUpdate(){
+        String updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+        Map map1 = new HashMap();
+        map1.put("id","208");
+        map1.put("name","二次酒驾");
+
+        map1.put("update_time",updateTime);
+        map1.put("update_user","zhangyiming208");
+
+        int num= caseClassificationMapper.updateCaseClassification(map1);
+
+        System.out.println("\t更新数目：\t"+num);
 
     }
 
